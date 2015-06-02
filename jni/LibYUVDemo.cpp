@@ -11,9 +11,71 @@
 using namespace libyuv;
 
 extern "C" {
-JNIEXPORT void Java_com_demo_libyuvdemo_MainActivity_callLibYUV(JNIEnv* env, jobject thiz) {
-	libyuv::RotationMode mode = libyuv::kRotate180;
-	printf("rotation mode selected = %d",mode);
+JNIEXPORT jbyteArray Java_com_demo_libyuvdemo_MainActivity_ConvertToI420(
+		JNIEnv* env, jobject thiz, jbyteArray nv21, int w, int h, int type) {
+
+	int nv21Len = env->GetArrayLength(nv21);
+	unsigned char* nv21Buf = new unsigned char[nv21Len];
+	env->GetByteArrayRegion(nv21, 0, nv21Len,
+			reinterpret_cast<jbyte*>(nv21Buf));
+
+	int Ysize = w * h;
+	size_t src_size = Ysize * 1.5;
+
+	unsigned char* I420 = new unsigned char[nv21Len];
+
+	unsigned char* pDstY = I420;
+	unsigned char* pDstU = I420 + Ysize;
+	unsigned char* pDstV = pDstU + (Ysize / 4);
+
+	int retVal = 0;
+
+	if(type == 1){
+		libyuv::RotationMode mode = libyuv::kRotate0;
+
+		retVal = libyuv::ConvertToI420(nv21Buf, src_size, pDstY, w, pDstU, w / 2, pDstV,
+				w / 2, 0, 0, w, h, w, h, mode, libyuv::FOURCC_NV21);
+	}else if(type == 2){
+		libyuv::RotationMode mode = libyuv::kRotate0;
+
+		retVal = libyuv::ConvertToI420(nv21Buf, src_size, pDstY, w, pDstU, w / 2, pDstV,
+				w / 2, 0, 0, w, -h, w, h, mode, libyuv::FOURCC_NV21);
+	}else if(type == 3){
+		libyuv::RotationMode mode = libyuv::kRotate90;
+
+		retVal = libyuv::ConvertToI420(nv21Buf, src_size, pDstY, h, pDstU, h / 2, pDstV,
+				h / 2, 0, 0, w, h, w, h, mode, libyuv::FOURCC_NV21);
+	}else if(type == 4){
+		libyuv::RotationMode mode = libyuv::kRotate90;
+
+		retVal = libyuv::ConvertToI420(nv21Buf, src_size, pDstY, h, pDstU, h / 2, pDstV,
+				h / 2, 0, 0, w, -h, w, h, mode, libyuv::FOURCC_NV21);
+	}
+	/*libyuv::ConvertToI420(const uint8* src_frame, size_t src_size,
+	 uint8* dst_y, int dst_stride_y,
+	 uint8* dst_u, int dst_stride_u,
+	 uint8* dst_v, int dst_stride_v,
+	 int crop_x, int crop_y,
+	 int src_width, int src_height,
+	 int crop_width, int crop_height,
+	 enum RotationMode rotation,
+	 uint32 format);*/
+
+	printf("type = %d and post convertI420 retVal = %d",type, retVal);
+
+
+	jbyteArray I420byte = env->NewByteArray(nv21Len);
+	env->SetByteArrayRegion(I420byte,0,nv21Len, reinterpret_cast<jbyte*>(I420));
+
+	if(I420){
+		delete [] I420;
+	}
+
+	if(nv21Buf){
+		delete [] nv21Buf;
+	}
+
+	return I420byte;
 }
 
 JNIEXPORT jstring Java_com_demo_libyuvdemo_MainActivity_stringFromJNI(

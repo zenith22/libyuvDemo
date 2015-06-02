@@ -8,21 +8,44 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.demo.libyuvdemo.MainActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
+    <Button
+        android:id="@+id/Button01"
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:onClick="ConvertToI420One"
+        android:text="ConvertToI420 - no rotation no inversion" />
 
     <Button
         android:id="@+id/button1"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="28dp"
-        android:text="Call"
-        android:onClick="callJNI" />
+        android:layout_alignLeft="@+id/Button01"
+        android:layout_below="@+id/Button01"
+        android:onClick="ConvertToI420Two"
+        android:text="ConvertToI420 - no rotation with inversion" />
+
+    <Button
+        android:id="@+id/Button02"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:onClick="ConvertToI420Three"
+        android:text="ConvertToI420 - 90 deg rotation no inversion" />
+
+    <Button
+        android:id="@+id/Button03"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/button1"
+        android:layout_below="@+id/Button02"
+        android:onClick="ConvertToI420Four"
+        android:text="ConvertToI420 - 90 deg rotation with inversion" />
 
 </RelativeLayout>
