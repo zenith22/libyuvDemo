@@ -25,6 +25,7 @@ public class MainActivity extends Activity {
 
 	private native byte[] ConvertToI420(byte[] nv21, int w, int h, int type);
 	
+	private native byte[] ConvertToI420NegativeStride(byte[] nv21, int w, int h, int type);
 
 	private final String sdCardPath = Environment.getExternalStorageDirectory()
 			.getAbsolutePath();
@@ -183,6 +184,44 @@ public class MainActivity extends Activity {
 
 	}
 
+	public void ConvertToI420NegativeStride(View view){
+
+
+		try {
+			int w = 176, h = 144;
+
+			File nv21File = new File(sdCardPath + "/libyuvDemo/nv21.yuv");
+			File I420File = new File(sdCardPath
+					+ "/libyuvDemo/nv21-I420-NegativeStride.yuv");
+
+			FileInputStream fileInputStream = new FileInputStream(nv21File);
+
+			byte[] nv21 = new byte[(int) (w * h * 1.5)];
+
+			fileInputStream.read(nv21);
+
+			fileInputStream.close();
+
+			byte[] I420 = ConvertToI420NegativeStride(nv21, w, h,4);
+
+			if (I420File.exists() == false) {
+				I420File.createNewFile();
+			}
+
+			FileOutputStream fileOutputStream = new FileOutputStream(I420File);
+			fileOutputStream.write(I420);
+			fileOutputStream.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

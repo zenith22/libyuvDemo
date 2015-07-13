@@ -48,4 +48,13 @@
         android:onClick="ConvertToI420Four"
         android:text="ConvertToI420 - 90 deg rotation with inversion" />
 
+    <Button
+        android:id="@+id/Button04"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Button03"
+        android:onClick="ConvertToI420NegativeStride"
+        android:text="ConvertToI420NegativeStride" />
+
 </RelativeLayout>
